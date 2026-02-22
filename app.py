@@ -2,8 +2,8 @@ from flask import Flask
 import feedparser
 from datetime import datetime, timedelta
 import time
-import pytz
 import re
+import pytz
 import os
 
 app = Flask(__name__)
@@ -94,8 +94,8 @@ def fetch_news():
     articles.sort(key=lambda x: x["published"], reverse=True)
 
     news_cache = articles
-    ist = pytz.timezone("Asia/Kolkata")
-    last_updated_time = datetime.now(ist).strftime("%b %d, %I:%M %p IST")
+    last_updated_time = datetime.now().strftime("%b %d, %H:%M IST")
+    last_fetch_time = datetime.now()
 
 
 @app.route("/")
@@ -227,13 +227,10 @@ def home():
 
     <body>
     <div class="header">
-    Metals & AI Intelligence
-    <div>
+        Metals & AI Intelligence
         <span class="toggle" onclick="toggleTheme()">🌙 / ☀️</span>
-        <span class="toggle" style="margin-left:10px;cursor:pointer;" onclick="location.reload()">🔄 Refresh</span>
     </div>
-    </div>
-    
+
     <div class="tabs">
         <div class="tab" onclick="filterCategory('ALL')">All</div>
         <div class="tab" onclick="filterCategory('METALS')">🪙 Metals</div>
