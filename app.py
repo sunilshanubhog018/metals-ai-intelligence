@@ -29,67 +29,34 @@ RSS_FEEDS = {
     "Financial Express": ("https://www.financialexpress.com/market/feed/", "India"),
 }
 
+# ---------------- KEYWORDS ---------------- #
+
 METAL_KEYWORDS = [
-    "gold",
-    "silver",
-    "bullion",
-    "precious metal",
-    "gold reserves",
-    "silver reserves",
-    "central bank reserves",
-    "commodity",
-    "mcx",
-    "futures",
-    "spot price",
-    "dedollarisation",
-    "de-dollarisation",
-    "currency debasement",
-    "currency depreciation",
-    "forex reserves",
-    "dollar dominance"
+    "gold", "silver", "bullion", "precious metal",
+    "gold reserves", "silver reserves", "central bank reserves",
+    "commodity", "mcx", "futures", "spot price",
+    "dedollarisation", "de-dollarisation",
+    "currency debasement", "currency depreciation",
+    "forex reserves", "dollar dominance"
 ]
 
 AI_KEYWORDS = [
-    "artificial intelligence",
-    "ai model",
-    "machine learning",
-    "generative ai",
-    "openai",
-    "ai chip",
-    "nvidia",
-    "semiconductor",
-    "deep learning",
-    "large language model",
-    "llm",
-    "chatgpt"
+    "artificial intelligence", "ai model", "machine learning",
+    "generative ai", "openai", "ai chip", "nvidia",
+    "semiconductor", "deep learning",
+    "large language model", "llm", "chatgpt"
 ]
 
 CRISIS_KEYWORDS = [
-    "war",
-    "conflict",
-    "recession",
-    "banking crisis",
-    "inflation",
-    "geopolitical",
-    "central bank",
-    "interest rate",
-    "rate hike",
-    "rate cut",
-    "global debt",
-    "sovereign debt",
-    "job data",
-    "jobs report",
-    "unemployment",
-    "layoffs",
-    "economic slowdown",
-    "market crash",
-    "financial instability",
-    "brics",
-    "tariffs",
-    "trade war",
-    "currency depreciation",
-    "currency debasement",
-    "dedollarisation",
+    "war", "conflict", "recession", "banking crisis",
+    "inflation", "geopolitical", "central bank",
+    "interest rate", "rate hike", "rate cut",
+    "global debt", "sovereign debt", "job data",
+    "jobs report", "unemployment", "layoffs",
+    "economic slowdown", "market crash",
+    "financial instability", "brics", "tariffs",
+    "trade war", "currency depreciation",
+    "currency debasement", "dedollarisation",
     "de-dollarisation"
 ]
 
@@ -164,7 +131,6 @@ def fetch_news():
                 "color": color
             })
 
-    # Proper datetime sort (fixed)
     articles.sort(key=lambda x: x["published"], reverse=True)
 
     news_cache = articles
@@ -180,11 +146,8 @@ def fetch_news():
 def home():
     global last_fetch_time
 
-    # First load
     if last_fetch_time is None:
         fetch_news()
-
-    # If older than 5 minutes → refresh in background (non-blocking)
     elif (datetime.utcnow() - last_fetch_time).total_seconds() > 300:
         threading.Thread(target=fetch_news).start()
 
@@ -282,6 +245,28 @@ def home():
         font-size:14px;
         margin-left:10px;
     }}
+
+    /* Scroll To Top Button */
+    #scrollTopBtn {{
+        display:none;
+        position:fixed;
+        bottom:25px;
+        right:20px;
+        z-index:99;
+        border:none;
+        background:#111827;
+        color:white;
+        padding:12px 15px;
+        border-radius:50%;
+        font-size:16px;
+        cursor:pointer;
+        box-shadow:0 4px 8px rgba(0,0,0,0.2);
+    }}
+
+    body.dark #scrollTopBtn {{
+        background:#e5e7eb;
+        color:black;
+    }}
     </style>
 
     <script>
@@ -298,13 +283,29 @@ def home():
 
     function toggleTheme() {{
         document.body.classList.toggle("dark");
-        localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+        localStorage.setItem("theme",
+            document.body.classList.contains("dark") ? "dark" : "light");
     }}
 
     window.onload = function() {{
         if(localStorage.getItem("theme") === "dark") {{
             document.body.classList.add("dark");
         }}
+    }}
+
+    // Scroll detection
+    window.onscroll = function() {{
+        let btn = document.getElementById("scrollTopBtn");
+        if (document.body.scrollTop > 300 ||
+            document.documentElement.scrollTop > 300) {{
+            btn.style.display = "block";
+        }} else {{
+            btn.style.display = "none";
+        }}
+    }};
+
+    function scrollToTop() {{
+        window.scrollTo({{ top: 0, behavior: "smooth" }});
     }}
     </script>
     </head>
@@ -342,7 +343,11 @@ def home():
         </div>
         """
 
-    html += "</body></html>"
+    html += """
+    <button onclick="scrollToTop()" id="scrollTopBtn">⬆</button>
+    </body></html>
+    """
+
     return html
 
 
