@@ -29,9 +29,69 @@ RSS_FEEDS = {
     "Financial Express": ("https://www.financialexpress.com/market/feed/", "India"),
 }
 
-METAL_KEYWORDS = ["gold", "silver", "bullion"]
-AI_KEYWORDS = ["artificial intelligence", "ai model", "machine learning", "generative ai", "openai", "ai chip"]
-CRISIS_KEYWORDS = ["war", "conflict", "recession", "banking crisis", "inflation", "geopolitical"]
+METAL_KEYWORDS = [
+    "gold",
+    "silver",
+    "bullion",
+    "precious metal",
+    "gold reserves",
+    "silver reserves",
+    "central bank reserves",
+    "commodity",
+    "mcx",
+    "futures",
+    "spot price",
+    "dedollarisation",
+    "de-dollarisation",
+    "currency debasement",
+    "currency depreciation",
+    "forex reserves",
+    "dollar dominance"
+]
+
+AI_KEYWORDS = [
+    "artificial intelligence",
+    "ai model",
+    "machine learning",
+    "generative ai",
+    "openai",
+    "ai chip",
+    "nvidia",
+    "semiconductor",
+    "deep learning",
+    "large language model",
+    "llm",
+    "chatgpt"
+]
+
+CRISIS_KEYWORDS = [
+    "war",
+    "conflict",
+    "recession",
+    "banking crisis",
+    "inflation",
+    "geopolitical",
+    "central bank",
+    "interest rate",
+    "rate hike",
+    "rate cut",
+    "global debt",
+    "sovereign debt",
+    "job data",
+    "jobs report",
+    "unemployment",
+    "layoffs",
+    "economic slowdown",
+    "market crash",
+    "financial instability",
+    "brics",
+    "tariffs",
+    "trade war",
+    "currency depreciation",
+    "currency debasement",
+    "dedollarisation",
+    "de-dollarisation"
+]
 
 news_cache = []
 last_updated_time = None
