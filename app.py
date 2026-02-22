@@ -27,13 +27,9 @@ RSS_FEEDS = {
     "Financial Express": ("https://www.financialexpress.com/market/feed/", "India"),
 }
 
-# ---------------- KEYWORDS ---------------- #
-
 METAL_KEYWORDS = ["gold", "silver", "bullion"]
 AI_KEYWORDS = ["artificial intelligence", "ai model", "machine learning", "generative ai", "openai", "ai chip"]
 CRISIS_KEYWORDS = ["war", "conflict", "recession", "banking crisis", "inflation", "geopolitical"]
-
-# ---------------- CACHE ---------------- #
 
 news_cache = []
 last_updated_time = None
@@ -42,8 +38,6 @@ last_fetch_time = None
 
 def fetch_news():
     global news_cache, last_updated_time, last_fetch_time
-
-    print("Fetching news...")
 
     articles = []
     seen_titles = set()
@@ -102,14 +96,11 @@ def fetch_news():
     last_updated_time = datetime.now().strftime("%b %d, %H:%M IST")
     last_fetch_time = datetime.now()
 
-    print("News updated.")
-
 
 @app.route("/")
 def home():
     global last_fetch_time
 
-    # Fetch only if cache empty or older than 5 minutes
     if last_fetch_time is None or (datetime.now() - last_fetch_time).seconds > 300:
         fetch_news()
 
@@ -119,27 +110,141 @@ def home():
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Metals & AI Intelligence</title>
     <style>
-    body {{ font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; margin:0; background:#f3f4f6; }}
-    .header {{ padding:15px; font-weight:700; font-size:20px; }}
-    .sub {{ font-size:12px; opacity:0.7; padding:0 15px 10px 15px; }}
-    .chip-bar {{ display:flex; gap:8px; padding:10px; }}
-    .chip {{ padding:6px 12px; border-radius:20px; background:#111827; color:white; cursor:pointer; font-size:12px; }}
-    .card {{ margin:12px; padding:16px; border-radius:16px; background:white; box-shadow:0 3px 10px rgba(0,0,0,0.05); }}
-    .badge {{ font-size:11px; font-weight:700; padding:4px 8px; border-radius:6px; display:inline-block; margin-bottom:8px; color:black; }}
-    .headline {{ font-size:17px; font-weight:700; margin-bottom:8px; }}
-    .summary {{ font-size:14px; margin-bottom:10px; }}
-    .meta {{ font-size:12px; opacity:0.6; }}
+    body {{
+        margin:0;
+        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+        background:#f3f4f6;
+        color:#111827;
+        transition:0.3s;
+    }}
+
+    body.dark {{
+        background:#0f172a;
+        color:#e5e7eb;
+    }}
+
+    .header {{
+        padding:15px;
+        font-size:20px;
+        font-weight:700;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }}
+
+    .tabs {{
+        display:flex;
+        gap:10px;
+        padding:10px 15px;
+        overflow-x:auto;
+    }}
+
+    .tab {{
+        padding:6px 12px;
+        border-radius:20px;
+        background:#111827;
+        color:white;
+        font-size:12px;
+        cursor:pointer;
+    }}
+
+    body.dark .tab {{
+        background:#334155;
+    }}
+
+    .card {{
+        margin:12px;
+        padding:16px;
+        border-radius:16px;
+        background:white;
+        box-shadow:0 3px 10px rgba(0,0,0,0.05);
+    }}
+
+    body.dark .card {{
+        background:#1e293b;
+        box-shadow:none;
+    }}
+
+    .badge {{
+        font-size:11px;
+        font-weight:700;
+        padding:4px 8px;
+        border-radius:6px;
+        display:inline-block;
+        margin-bottom:8px;
+        color:black;
+    }}
+
+    .headline {{
+        font-size:17px;
+        font-weight:700;
+        margin-bottom:8px;
+    }}
+
+    .summary {{
+        font-size:14px;
+        margin-bottom:10px;
+    }}
+
+    .meta {{
+        font-size:12px;
+        opacity:0.6;
+    }}
+
     a {{ text-decoration:none; color:inherit; }}
+
+    .toggle {{
+        cursor:pointer;
+        font-size:14px;
+    }}
     </style>
+
+    <script>
+    function filterCategory(cat) {{
+        let cards = document.querySelectorAll(".card");
+        cards.forEach(card => {{
+            if (cat === "ALL" || card.dataset.category === cat) {{
+                card.style.display = "block";
+            }} else {{
+                card.style.display = "none";
+            }}
+        }});
+    }}
+
+    function toggleTheme() {{
+        document.body.classList.toggle("dark");
+        localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+    }}
+
+    window.onload = function() {{
+        if(localStorage.getItem("theme") === "dark") {{
+            document.body.classList.add("dark");
+        }}
+    }}
+    </script>
     </head>
+
     <body>
-    <div class="header">Metals & AI Intelligence</div>
-    <div class="sub">Last Updated: {last_updated_time}</div>
+    <div class="header">
+        Metals & AI Intelligence
+        <span class="toggle" onclick="toggleTheme()">🌙 / ☀️</span>
+    </div>
+
+    <div class="tabs">
+        <div class="tab" onclick="filterCategory('ALL')">All</div>
+        <div class="tab" onclick="filterCategory('METALS')">🪙 Metals</div>
+        <div class="tab" onclick="filterCategory('AI')">🤖 AI</div>
+        <div class="tab" onclick="filterCategory('CRISIS')">⚠️ Crisis</div>
+    </div>
+
+    <div style="padding:0 15px 10px 15px;font-size:12px;opacity:0.6;">
+        Last Updated: {last_updated_time}
+    </div>
     """
 
     for a in news_cache:
         html += f"""
-        <div class="card">
+        <div class="card" data-category="{a['category']}">
             <span class="badge" style="background:{a['color']}">{a['category']}</span>
             <a href="{a['link']}" target="_blank">
                 <div class="headline">{a['title']}</div>
