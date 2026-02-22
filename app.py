@@ -149,7 +149,7 @@ def home():
     if last_fetch_time is None:
         fetch_news()
     elif (datetime.utcnow() - last_fetch_time).total_seconds() > 300:
-        threading.Thread(target=fetch_news).start()
+        fetch_news()
 
     html = f"""
     <html>
