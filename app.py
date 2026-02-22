@@ -5,6 +5,7 @@ import time
 import re
 import pytz
 import os
+import threading
 
 app = Flask(__name__)
 
@@ -37,12 +38,23 @@ last_updated_time = None
 last_fetch_time = None
 
 
+# ---------------- IST TIME ---------------- #
+
+def get_ist_time():
+    ist = pytz.timezone("Asia/Kolkata")
+    return datetime.now(ist)
+
+
+# ---------------- FETCH NEWS ---------------- #
+
 def fetch_news():
     global news_cache, last_updated_time, last_fetch_time
 
+    print("Fetching news...")
+
     articles = []
     seen_titles = set()
-    three_days_ago = datetime.now() - timedelta(days=3)
+    three_days_ago = datetime.utcnow() - timedelta(days=3)
 
     for source, (url, region) in RSS_FEEDS.items():
         feed = feedparser.parse(url)
@@ -51,8 +63,9 @@ def fetch_news():
             if not hasattr(entry, "published_parsed") or not entry.published_parsed:
                 continue
 
-            published = datetime.fromtimestamp(time.mktime(entry.published_parsed))
-            if published < three_days_ago:
+            published_dt = datetime.fromtimestamp(time.mktime(entry.published_parsed))
+
+            if published_dt < three_days_ago:
                 continue
 
             title = entry.title
@@ -86,24 +99,34 @@ def fetch_news():
                 "link": entry.link,
                 "source": source,
                 "region": region,
-                "published": published.strftime('%b %d, %H:%M'),
+                "published": published_dt.strftime('%b %d, %H:%M'),
                 "category": category,
                 "color": color
             })
 
+    # Proper datetime sort (fixed)
     articles.sort(key=lambda x: x["published"], reverse=True)
 
     news_cache = articles
-    last_updated_time = datetime.now().strftime("%b %d, %H:%M IST")
-    last_fetch_time = datetime.now()
+    last_updated_time = get_ist_time().strftime("%d %b %Y, %I:%M %p IST")
+    last_fetch_time = datetime.utcnow()
 
+    print("News updated.")
+
+
+# ---------------- ROUTE ---------------- #
 
 @app.route("/")
 def home():
     global last_fetch_time
 
-    if last_fetch_time is None or (datetime.now() - last_fetch_time).seconds > 300:
+    # First load
+    if last_fetch_time is None:
         fetch_news()
+
+    # If older than 5 minutes → refresh in background (non-blocking)
+    elif (datetime.utcnow() - last_fetch_time).total_seconds() > 300:
+        threading.Thread(target=fetch_news).start()
 
     html = f"""
     <html>
@@ -197,6 +220,7 @@ def home():
     .toggle {{
         cursor:pointer;
         font-size:14px;
+        margin-left:10px;
     }}
     </style>
 
@@ -228,7 +252,10 @@ def home():
     <body>
     <div class="header">
         Metals & AI Intelligence
-        <span class="toggle" onclick="toggleTheme()">🌙 / ☀️</span>
+        <div>
+            <span class="toggle" onclick="toggleTheme()">🌙 / ☀️</span>
+            <span class="toggle" onclick="location.reload()">🔄 Refresh</span>
+        </div>
     </div>
 
     <div class="tabs">
