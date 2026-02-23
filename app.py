@@ -38,32 +38,37 @@ RSS_FEEDS = {
 # ---------------- KEYWORDS ---------------- #
 
 METAL_KEYWORDS = [
-    "gold", "silver", "bullion", "precious metal",
-    "gold reserves", "silver reserves", "central bank reserves",
-    "commodity", "mcx", "futures", "spot price",
-    "dedollarisation", "de-dollarisation",
-    "currency debasement", "currency depreciation",
-    "forex reserves", "dollar dominance"
+    "gold price", "silver price", "xau", "xag", "xauusd", "xagusd",
+"comex", "lbma", "shanghai gold",
+"central bank buying", "gold purchases", "gold accumulation", "official sector buying",
+"gold etf", "silver etf", "gld", "slv", "gdx",
+"gold miners", "silver miners", "mining stocks", "junior miners",
+"safe haven", "inflation hedge", "monetary metal", "physical gold", "paper gold",
+# India-specific (huge on ET, Moneycontrol, Mint)
+"jewellery demand", "gold jewellery", "gold imports", "gold duty", "gold import", "silver import",
+"mcx gold", "mcx silver", "record high gold", "record high silver"
 ]
 
 AI_KEYWORDS = [
-    "artificial intelligence", "ai model", "machine learning",
-    "generative ai", "openai", "ai chip", "nvidia",
-    "semiconductor", "deep learning",
-    "large language model", "llm", "chatgpt"
+    "agi", "artificial general intelligence", "superintelligence",
+"ai agent", "agentic ai", "ai agents", "autonomous agent",
+"multimodal", "rag", "retrieval augmented",
+"ai regulation", "ai safety", "ai governance", "ai ethics", "ai act",
+"data center", "ai infrastructure", "ai compute", "gpu", "ai energy",
+"anthropic", "claude", "gemini", "grok", "xai", "llama", "deepseek",
+"foundation model", "reasoning model", "ai capex"
 ]
 
 CRISIS_KEYWORDS = [
-    "war", "conflict", "recession", "banking crisis",
-    "inflation", "geopolitical", "central bank",
-    "interest rate", "rate hike", "rate cut",
-    "global debt", "sovereign debt", "job data",
-    "jobs report", "unemployment", "layoffs",
-    "economic slowdown", "market crash",
-    "financial instability", "brics", "tariffs",
-    "trade war", "currency depreciation",
-    "currency debasement", "dedollarisation",
-    "de-dollarisation"
+    "stagflation", "debt crisis", "fiscal deficit", "debt ceiling",
+"yield curve", "inverted yield curve", "bond yield", "treasury yield",
+"soft landing", "hard landing", "recession fears", "recession odds",
+"geopolitical risk", "trade tensions", "tariff war", "supply chain", "energy crisis", "oil shock",
+"cyber attack", "financial contagion", "systemic risk", "bank failure", "credit crunch",
+"pmi", "cpi data", "nonfarm payrolls", "nfp", "jobless claims",
+"fed pivot", "quantitative tightening", "qt", "qe",
+# India angle (very useful on your Indian feeds)
+"rupee depreciation", "india fiscal deficit", "rbi rate", "repo rate", "current account deficit", "cad", "fii selling"
 ]
 
 news_cache = []
