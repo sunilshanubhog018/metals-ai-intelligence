@@ -13,16 +13,12 @@ app = Flask(__name__)
 
 RSS_FEEDS = {
     # Global
-    "Reuters": ("https://feeds.reuters.com/reuters/businessNews", "Global"),
-    "Bloomberg": ("https://feeds.bloomberg.com/markets/news.rss", "Global"),
-    "CNBC": ("https://www.cnbc.com/id/100003114/device/rss/rss.html", "Global"),
-    "MarketWatch": ("https://feeds.marketwatch.com/marketwatch/topstories/", "Global"),
+    "Reuters": ("https://www.reuters.com/business/feed", "Global"),
     "Kitco": ("https://www.kitco.com/news/category/mining/rss", "Global"),
-    # Additional Global Sources
-    "Forbes": ("https://www.forbes.com/markets/feed/", "Global"),
-    "Barchart": ("https://www.barchart.com/rss/news", "Global"),
-    "Wall Street Journal": ("https://feeds.content.dowjones.com/rss/WSJcomUSBusiness.xml", "Global"),
-    "TV BRICS": ("https://tvbrics.com/en/rss/", "Global"),
+    "CNBC TV18": ("https://www.cnbctv18.com/commonfeeds/v1/cne/rss/market.xml", "India"),
+    "Moneycontrol": ("https://www.moneycontrol.com/rss/latestnews.xml", "India"),   # better than old one
+    "Business Standard": ("https://www.business-standard.com/rss/markets-106.rss", "India"),  # keep or try this if needed
+    "Financial Express": ("https://www.financialexpress.com/market/feed/", "India"),  # keep
 
     # India
     "Economic Times": ("https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms", "India"),
@@ -32,67 +28,26 @@ RSS_FEEDS = {
     "Hindu BusinessLine": ("https://www.thehindubusinessline.com/markets/?service=rss", "India"),
     "Financial Express": ("https://www.financialexpress.com/market/feed/", "India"),
     "Financial Times": ("https://www.ft.com/?format=rss", "Global"),
-    "CNBC TV18": ("https://www.cnbctv18.com/commonfeeds/v1/eng/rss/markets.xml", "India"),
+    "CNBC TV18": ("https://www.cnbctv18.com/commonfeeds/v1/cne/rss/market.xml", "India"),
 }
 
 # ---------------- KEYWORDS (FULL + UPDATED) ---------------- #
 METAL_KEYWORDS = [
-    # Originals
-    "gold", "silver", "bullion", "precious metal",
-    "gold reserves", "silver reserves", "central bank reserves",
-    "commodity", "mcx", "futures", "spot price",
-    "dedollarisation", "de-dollarisation",
-    "currency debasement", "currency depreciation",
-    "forex reserves", "dollar dominance",
-    # Additions (2026 high-signal)
-    "gold price", "silver price", "xau", "xag", "xauusd", "xagusd",
-    "comex", "lbma", "shanghai gold",
-    "central bank buying", "gold purchases", "gold accumulation", "official sector buying",
-    "gold etf", "silver etf", "gld", "slv", "gdx",
-    "gold miners", "silver miners", "mining stocks", "junior miners",
-    "safe haven", "inflation hedge", "monetary metal", "physical gold", "paper gold",
-    "jewellery demand", "gold jewellery", "gold imports", "gold duty", "gold import", "silver import",
-    "mcx gold", "mcx silver", "record high gold", "record high silver"
+    "gold", "silver", "xau", "xag", "gold price", "silver price",
+    "mcx gold", "mcx silver", "record high gold", "safe haven", "bullion",
+    "central bank buying", "gold etf", "gold miners"
 ]
 
 AI_KEYWORDS = [
-    # Originals
-    "artificial intelligence", "ai model", "machine learning",
-    "generative ai", "openai", "ai chip", "nvidia",
-    "semiconductor", "deep learning",
-    "large language model", "llm", "chatgpt",
-    # Additions
-    "agi", "artificial general intelligence", "superintelligence",
-    "ai agent", "agentic ai", "ai agents", "autonomous agent",
-    "multimodal", "rag", "retrieval augmented",
-    "ai regulation", "ai safety", "ai governance", "ai ethics", "ai act",
-    "data center", "ai infrastructure", "ai compute", "gpu", "ai energy",
-    "anthropic", "claude", "gemini", "grok", "xai", "llama", "deepseek",
-    "foundation model", "reasoning model", "ai capex"
+    "ai", "artificial intelligence", "nvidia", "openai", "chatgpt",
+    "llm", "machine learning", "generative ai", "ai agent", "gpu"
 ]
 
 CRISIS_KEYWORDS = [
-    # Originals
-    "war", "conflict", "recession", "banking crisis",
-    "inflation", "geopolitical", "central bank",
-    "interest rate", "rate hike", "rate cut",
-    "global debt", "sovereign debt", "job data",
-    "jobs report", "unemployment", "layoffs",
-    "economic slowdown", "market crash",
-    "financial instability", "brics", "tariffs",
-    "trade war", "currency depreciation",
-    "currency debasement", "dedollarisation", "de-dollarisation",
-    # Additions
-    "stagflation", "debt crisis", "fiscal deficit", "debt ceiling",
-    "yield curve", "inverted yield curve", "bond yield", "treasury yield",
-    "soft landing", "hard landing", "recession fears", "recession odds",
-    "geopolitical risk", "trade tensions", "tariff war", "supply chain", "energy crisis", "oil shock",
-    "cyber attack", "financial contagion", "systemic risk", "bank failure", "credit crunch",
-    "pmi", "cpi data", "nonfarm payrolls", "nfp", "jobless claims",
-    "fed pivot", "quantitative tightening", "qt", "qe",
-    "rupee depreciation", "india fiscal deficit", "rbi rate", "repo rate", "current account deficit", "cad", "fii selling"
+    "recession", "inflation", "war", "conflict", "geopolitical",
+    "interest rate", "unemployment", "market crash", "trade war",
+    "rupee depreciation", "fii selling", "rbi rate", "debt crisis", "tariff"
 ]
-
 news_cache = []
 last_updated_time = None
 last_fetch_time = None
@@ -127,6 +82,13 @@ def fetch_news():
                 
             title = entry.title
             summary = re.sub('<.*?>', '', entry.get("summary", "") or entry.get("description", ""))
+            
+            # NEW: Read full content field (fixes Moneycontrol, CNBC TV18, Reuters, etc.)
+            content_text = ""
+            if hasattr(entry, 'content') and entry.content:
+                content_text = re.sub('<.*?>', '', str(entry.content[0].value))
+            summary += " " + content_text
+            
             content = (title + " " + summary).lower()
             
             if title in seen_titles:
