@@ -17,7 +17,7 @@ RSS_FEEDS = {
     "Bloomberg": ("https://feeds.bloomberg.com/markets/news.rss", "Global"),
     "CNBC": ("https://www.cnbc.com/id/100003114/device/rss/rss.html", "Global"),
     "MarketWatch": ("https://feeds.marketwatch.com/marketwatch/topstories/", "Global"),
-    "Kitco": ("https://www.kitco.com/rss/news", "Global"),
+    "Kitco": ("https://www.kitco.com/news/category/mining/rss", "Global"),
     # Additional Global Sources
     "Forbes": ("https://www.forbes.com/markets/feed/", "Global"),
     "Barchart": ("https://www.barchart.com/rss/news", "Global"),
@@ -35,40 +35,62 @@ RSS_FEEDS = {
     "CNBC TV18": ("https://www.cnbctv18.com/commonfeeds/v1/eng/rss/markets.xml", "India"),
 }
 
-# ---------------- KEYWORDS ---------------- #
-
+# ---------------- KEYWORDS (FULL + UPDATED) ---------------- #
 METAL_KEYWORDS = [
+    # Originals
+    "gold", "silver", "bullion", "precious metal",
+    "gold reserves", "silver reserves", "central bank reserves",
+    "commodity", "mcx", "futures", "spot price",
+    "dedollarisation", "de-dollarisation",
+    "currency debasement", "currency depreciation",
+    "forex reserves", "dollar dominance",
+    # Additions (2026 high-signal)
     "gold price", "silver price", "xau", "xag", "xauusd", "xagusd",
-"comex", "lbma", "shanghai gold",
-"central bank buying", "gold purchases", "gold accumulation", "official sector buying",
-"gold etf", "silver etf", "gld", "slv", "gdx",
-"gold miners", "silver miners", "mining stocks", "junior miners",
-"safe haven", "inflation hedge", "monetary metal", "physical gold", "paper gold",
-# India-specific (huge on ET, Moneycontrol, Mint)
-"jewellery demand", "gold jewellery", "gold imports", "gold duty", "gold import", "silver import",
-"mcx gold", "mcx silver", "record high gold", "record high silver"
+    "comex", "lbma", "shanghai gold",
+    "central bank buying", "gold purchases", "gold accumulation", "official sector buying",
+    "gold etf", "silver etf", "gld", "slv", "gdx",
+    "gold miners", "silver miners", "mining stocks", "junior miners",
+    "safe haven", "inflation hedge", "monetary metal", "physical gold", "paper gold",
+    "jewellery demand", "gold jewellery", "gold imports", "gold duty", "gold import", "silver import",
+    "mcx gold", "mcx silver", "record high gold", "record high silver"
 ]
 
 AI_KEYWORDS = [
+    # Originals
+    "artificial intelligence", "ai model", "machine learning",
+    "generative ai", "openai", "ai chip", "nvidia",
+    "semiconductor", "deep learning",
+    "large language model", "llm", "chatgpt",
+    # Additions
     "agi", "artificial general intelligence", "superintelligence",
-"ai agent", "agentic ai", "ai agents", "autonomous agent",
-"multimodal", "rag", "retrieval augmented",
-"ai regulation", "ai safety", "ai governance", "ai ethics", "ai act",
-"data center", "ai infrastructure", "ai compute", "gpu", "ai energy",
-"anthropic", "claude", "gemini", "grok", "xai", "llama", "deepseek",
-"foundation model", "reasoning model", "ai capex"
+    "ai agent", "agentic ai", "ai agents", "autonomous agent",
+    "multimodal", "rag", "retrieval augmented",
+    "ai regulation", "ai safety", "ai governance", "ai ethics", "ai act",
+    "data center", "ai infrastructure", "ai compute", "gpu", "ai energy",
+    "anthropic", "claude", "gemini", "grok", "xai", "llama", "deepseek",
+    "foundation model", "reasoning model", "ai capex"
 ]
 
 CRISIS_KEYWORDS = [
+    # Originals
+    "war", "conflict", "recession", "banking crisis",
+    "inflation", "geopolitical", "central bank",
+    "interest rate", "rate hike", "rate cut",
+    "global debt", "sovereign debt", "job data",
+    "jobs report", "unemployment", "layoffs",
+    "economic slowdown", "market crash",
+    "financial instability", "brics", "tariffs",
+    "trade war", "currency depreciation",
+    "currency debasement", "dedollarisation", "de-dollarisation",
+    # Additions
     "stagflation", "debt crisis", "fiscal deficit", "debt ceiling",
-"yield curve", "inverted yield curve", "bond yield", "treasury yield",
-"soft landing", "hard landing", "recession fears", "recession odds",
-"geopolitical risk", "trade tensions", "tariff war", "supply chain", "energy crisis", "oil shock",
-"cyber attack", "financial contagion", "systemic risk", "bank failure", "credit crunch",
-"pmi", "cpi data", "nonfarm payrolls", "nfp", "jobless claims",
-"fed pivot", "quantitative tightening", "qt", "qe",
-# India angle (very useful on your Indian feeds)
-"rupee depreciation", "india fiscal deficit", "rbi rate", "repo rate", "current account deficit", "cad", "fii selling"
+    "yield curve", "inverted yield curve", "bond yield", "treasury yield",
+    "soft landing", "hard landing", "recession fears", "recession odds",
+    "geopolitical risk", "trade tensions", "tariff war", "supply chain", "energy crisis", "oil shock",
+    "cyber attack", "financial contagion", "systemic risk", "bank failure", "credit crunch",
+    "pmi", "cpi data", "nonfarm payrolls", "nfp", "jobless claims",
+    "fed pivot", "quantitative tightening", "qt", "qe",
+    "rupee depreciation", "india fiscal deficit", "rbi rate", "repo rate", "current account deficit", "cad", "fii selling"
 ]
 
 news_cache = []
@@ -87,50 +109,44 @@ def get_ist_time():
 
 def fetch_news():
     global news_cache, last_updated_time, last_fetch_time
-
-    print("Fetching news...")
-
+    print("🔄 Fetching news from all sources...")
     articles = []
     seen_titles = set()
     three_days_ago = datetime.utcnow() - timedelta(days=3)
-
+    
+    total_matched = 0
     for source, (url, region) in RSS_FEEDS.items():
         feed = feedparser.parse(url)
-
+        source_count = 0
         for entry in feed.entries:
             if not hasattr(entry, "published_parsed") or not entry.published_parsed:
                 continue
-
             published_dt = datetime.fromtimestamp(time.mktime(entry.published_parsed))
-
             if published_dt < three_days_ago:
                 continue
-
+                
             title = entry.title
-            summary = re.sub('<.*?>', '', entry.get("summary", ""))
+            summary = re.sub('<.*?>', '', entry.get("summary", "") or entry.get("description", ""))
             content = (title + " " + summary).lower()
-
+            
             if title in seen_titles:
                 continue
             seen_titles.add(title)
-
+            
             category = None
             color = ""
-
             if any(k in content for k in METAL_KEYWORDS):
                 category = "METALS"
                 color = "#facc15"
-
             elif any(k in content for k in AI_KEYWORDS):
                 category = "AI"
                 color = "#3b82f6"
-
             elif any(k in content for k in CRISIS_KEYWORDS):
                 category = "CRISIS"
                 color = "#ef4444"
             else:
                 continue
-
+                
             articles.append({
                 "title": title,
                 "summary": summary[:180] + "..." if len(summary) > 180 else summary,
@@ -141,15 +157,16 @@ def fetch_news():
                 "category": category,
                 "color": color
             })
-
+            source_count += 1
+            total_matched += 1
+        
+        print(f"   {source:20} → {source_count:2d} relevant articles")
+    
     articles.sort(key=lambda x: x["published"], reverse=True)
-
     news_cache = articles
     last_updated_time = get_ist_time().strftime("%d %b %Y, %I:%M %p IST")
     last_fetch_time = datetime.utcnow()
-
-    print("News updated.")
-
+    print(f"✅ Done! Total relevant articles: {total_matched}")
 
 # ---------------- ROUTE ---------------- #
 
