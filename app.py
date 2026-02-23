@@ -22,7 +22,7 @@ RSS_FEEDS = {
     "TV BRICS": ("https://tvbrics.com/en/rss/", "Global"),
     # India
     "Economic Times": ("https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms", "India"),
-    "Moneycontrol": ("https://www.moneycontrol.com/rss/latestnews.xml", "India"),
+    "Moneycontrol": ("https://www.moneycontrol.com/rss/marketreports.xml", "India"),
     "Mint": ("https://www.livemint.com/rss/markets", "India"),
     "Business Standard": ("https://www.business-standard.com/rss/markets-106.rss", "India"),
     "Hindu BusinessLine": ("https://www.thehindubusinessline.com/markets/?service=rss", "India"),
@@ -35,7 +35,7 @@ RSS_FEEDS = {
 METAL_KEYWORDS = [
     "gold", "silver", "xau", "xag", "gold price", "silver price",
     "mcx gold", "mcx silver", "record high gold", "safe haven", "bullion",
-    "central bank buying", "gold etf", "gold miners","sensex", "nifty"
+    "central bank buying", "gold etf", "gold miners","sensex", "nifty","sensex", "nifty", "bse", "nse","COMEX"
 ]
 
 AI_KEYWORDS = [
