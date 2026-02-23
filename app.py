@@ -18,7 +18,11 @@ RSS_FEEDS = {
     "CNBC": ("https://www.cnbc.com/id/100003114/device/rss/rss.html", "Global"),
     "MarketWatch": ("https://feeds.marketwatch.com/marketwatch/topstories/", "Global"),
     "Kitco": ("https://www.kitco.com/rss/news", "Global"),
-    "Financial Times": ("https://www.ft.com/?format=rss", "Global"),
+    # Additional Global Sources
+    "Forbes": ("https://www.forbes.com/markets/feed/", "Global"),
+    "Barchart": ("https://www.barchart.com/rss/news", "Global"),
+    "Wall Street Journal": ("https://feeds.content.dowjones.com/rss/WSJcomUSBusiness.xml", "Global"),
+    "TV BRICS": ("https://tvbrics.com/en/rss/", "Global"),
 
     # India
     "Economic Times": ("https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms", "India"),
@@ -27,6 +31,8 @@ RSS_FEEDS = {
     "Business Standard": ("https://www.business-standard.com/rss/markets-106.rss", "India"),
     "Hindu BusinessLine": ("https://www.thehindubusinessline.com/markets/?service=rss", "India"),
     "Financial Express": ("https://www.financialexpress.com/market/feed/", "India"),
+    "Financial Times": ("https://www.ft.com/?format=rss", "Global"),
+    "CNBC TV18": ("https://www.cnbctv18.com/commonfeeds/v1/eng/rss/markets.xml", "India"),
 }
 
 # ---------------- KEYWORDS ---------------- #
