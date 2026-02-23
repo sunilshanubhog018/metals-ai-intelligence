@@ -71,65 +71,81 @@ def fetch_news():
     
     total_matched = 0
     for source, (url, region) in RSS_FEEDS.items():
-        feed = feedparser.parse(url)
-        source_count = 0
-        for entry in feed.entries:
-            if not hasattr(entry, "published_parsed") or not entry.published_parsed:
-                continue
-            published_dt = datetime.fromtimestamp(time.mktime(entry.published_parsed))
-            if published_dt < three_days_ago:
-                continue
+        try:
+            # Added User-Agent so websites don't block us
+            feed = feedparser.parse(url, agent='Mozilla/5.0 (compatible; MetalsAI-Bot/1.0)')
+            source_count = 0
+            for entry in feed.entries:
+                if not hasattr(entry, "published_parsed") or not entry.published_parsed:
+                    continue
+                published_dt = datetime.fromtimestamp(time.mktime(entry.published_parsed))
+                if published_dt < three_days_ago:
+                    continue
+                    
+                title = entry.title
                 
-            title = entry.title
-            summary = re.sub('<.*?>', '', entry.get("summary", "") or entry.get("description", ""))
-            
-            # NEW: Read full content field (fixes Moneycontrol, CNBC TV18, Reuters, etc.)
-            content_text = ""
-            if hasattr(entry, 'content') and entry.content:
-                content_text = re.sub('<.*?>', '', str(entry.content[0].value))
-            summary += " " + content_text
-            
-            content = (title + " " + summary).lower()
-            
-            if title in seen_titles:
-                continue
-            seen_titles.add(title)
-            
-            category = None
-            color = ""
-            if any(k in content for k in METAL_KEYWORDS):
-                category = "METALS"
-                color = "#facc15"
-            elif any(k in content for k in AI_KEYWORDS):
-                category = "AI"
-                color = "#3b82f6"
-            elif any(k in content for k in CRISIS_KEYWORDS):
-                category = "CRISIS"
-                color = "#ef4444"
-            else:
-                continue
+                # Safe summary
+                summary = re.sub('<.*?>', '', 
+                    entry.get("summary", "") or entry.get("description", "") or ""
+                )
                 
-            articles.append({
-                "title": title,
-                "summary": summary[:180] + "..." if len(summary) > 180 else summary,
-                "link": entry.link,
-                "source": source,
-                "region": region,
-                "published": published_dt.strftime('%b %d, %H:%M'),
-                "category": category,
-                "color": color
-            })
-            source_count += 1
-            total_matched += 1
-        
-        print(f"   {source:20} → {source_count:2d} relevant articles")
+                # FIXED & SAFE content extraction (this stops the crash)
+                content_text = ""
+                try:
+                    content = entry.get('content')
+                    if content:
+                        if isinstance(content, list) and len(content) > 0:
+                            content_text = re.sub('<.*?>', '', str(content[0].get('value', '')))
+                        else:
+                            content_text = re.sub('<.*?>', '', str(content))
+                except:
+                    pass  # one bad entry won't crash everything
+                
+                summary += " " + content_text
+                content = (title + " " + summary).lower()
+                
+                if title in seen_titles:
+                    continue
+                seen_titles.add(title)
+                
+                category = None
+                color = ""
+                if any(k in content for k in METAL_KEYWORDS):
+                    category = "METALS"
+                    color = "#facc15"
+                elif any(k in content for k in AI_KEYWORDS):
+                    category = "AI"
+                    color = "#3b82f6"
+                elif any(k in content for k in CRISIS_KEYWORDS):
+                    category = "CRISIS"
+                    color = "#ef4444"
+                else:
+                    continue
+                    
+                articles.append({
+                    "title": title,
+                    "summary": summary[:180] + "..." if len(summary) > 180 else summary,
+                    "link": entry.link,
+                    "source": source,
+                    "region": region,
+                    "published": published_dt.strftime('%b %d, %H:%M'),
+                    "category": category,
+                    "color": color
+                })
+                source_count += 1
+                total_matched += 1
+            
+            print(f"   {source:20} → {source_count:2d} relevant articles")
+            
+        except Exception as e:
+            print(f"   {source:20} → ERROR: {str(e)[:80]}")  # shows error per site but continues
     
     articles.sort(key=lambda x: x["published"], reverse=True)
     news_cache = articles
     last_updated_time = get_ist_time().strftime("%d %b %Y, %I:%M %p IST")
     last_fetch_time = datetime.utcnow()
     print(f"✅ Done! Total relevant articles: {total_matched}")
-
+    
 # ---------------- ROUTE ---------------- #
 
 @app.route("/")
