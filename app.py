@@ -20,6 +20,12 @@ RSS_FEEDS = {
     "Barchart": ("https://www.barchart.com/rss/news", "Global"),
     "Wall Street Journal": ("https://feeds.content.dowjones.com/rss/WSJcomUSBusiness.xml", "Global"),
     "TV BRICS": ("https://tvbrics.com/en/rss/", "Global"),
+    "Mining.com": ("https://www.mining.com/feed/", "Global"),
+    "Investing.com": ("https://www.investing.com/rss/news_14.rss", "Global"),
+    "VentureBeat AI": ("https://venturebeat.com/category/ai/feed/", "Global"),
+    "WIRED AI": ("https://www.wired.com/feed/tag/ai/latest/rss", "Global"),
+    "BBC Business": ("https://feeds.bbci.co.uk/news/business/rss.xml", "Global"),
+    "Yahoo Finance": ("https://finance.yahoo.com/rss/topstories", "Global"),
     # India
     "Economic Times": ("https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms", "India"),
     "Moneycontrol": ("https://www.moneycontrol.com/rss/marketreports.xml", "India"),
