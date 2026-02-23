@@ -20,7 +20,8 @@ RSS_FEEDS = {
     "Barchart": ("https://www.barchart.com/rss/news", "Global"),
     "Wall Street Journal": ("https://feeds.content.dowjones.com/rss/WSJcomUSBusiness.xml", "Global"),
     "TV BRICS": ("https://tvbrics.com/en/rss/", "Global"),
-    "Mining.com": ("https://www.mining.com/feed/", "Global"),
+    "Mining.com": ("https://www.mining.com/tag/gold/feed/", "Global"),   # or /tag/silver/feed/
+    "Mining.com": ("https://www.mining.com/tag/silver/feed/", "Global"),
     "Investing.com": ("https://www.investing.com/rss/news_14.rss", "Global"),
     "VentureBeat AI": ("https://venturebeat.com/category/ai/feed/", "Global"),
     "WIRED AI": ("https://www.wired.com/feed/tag/ai/latest/rss", "Global"),
