@@ -13,10 +13,10 @@ app = Flask(__name__)
 
 RSS_FEEDS = {
     # Global
-    "Reuters": ("https://www.reuters.com/business/feed", "Global"),
+    "Reuters": ("https://feeds.reuters.com/reuters/businessNews", "Global"),
     "Kitco": ("https://www.kitco.com/news/category/mining/rss", "Global"),
     "CNBC TV18": ("https://www.cnbctv18.com/commonfeeds/v1/cne/rss/market.xml", "India"),
-    "Moneycontrol": ("https://www.moneycontrol.com/rss/latestnews.xml", "India"),   # better than old one
+    "Moneycontrol": "Moneycontrol": ("https://www.moneycontrol.com/rss/latestnews.xml", "India"),   # better than old one
     "Business Standard": ("https://www.business-standard.com/rss/markets-106.rss", "India"),  # keep or try this if needed
     "Financial Express": ("https://www.financialexpress.com/market/feed/", "India"),  # keep
 
@@ -35,7 +35,7 @@ RSS_FEEDS = {
 METAL_KEYWORDS = [
     "gold", "silver", "xau", "xag", "gold price", "silver price",
     "mcx gold", "mcx silver", "record high gold", "safe haven", "bullion",
-    "central bank buying", "gold etf", "gold miners"
+    "central bank buying", "gold etf", "gold miners","sensex", "nifty"
 ]
 
 AI_KEYWORDS = [
