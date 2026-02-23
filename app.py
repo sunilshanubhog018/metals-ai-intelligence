@@ -8,10 +8,6 @@ import os
 import threading
 
 app = Flask(__name__)
-
-# ---------------- SOURCES ---------------- #
-
-RSS_FEEDS = {
     # ---------------- SOURCES ---------------- #
 RSS_FEEDS = {
     # Global
