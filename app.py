@@ -12,17 +12,21 @@ app = Flask(__name__)
 # ---------------- SOURCES ---------------- #
 
 RSS_FEEDS = {
+    # ---------------- SOURCES ---------------- #
+RSS_FEEDS = {
     # Global
     "Reuters": ("https://feeds.reuters.com/reuters/businessNews", "Global"),
+    "Bloomberg": ("https://feeds.bloomberg.com/markets/news.rss", "Global"),
+    "CNBC": ("https://www.cnbc.com/id/100003114/device/rss/rss.html", "Global"),
+    "MarketWatch": ("https://feeds.marketwatch.com/marketwatch/topstories/", "Global"),
     "Kitco": ("https://www.kitco.com/news/category/mining/rss", "Global"),
-    "CNBC TV18": ("https://www.cnbctv18.com/commonfeeds/v1/cne/rss/market.xml", "India"),
-    "Moneycontrol": "Moneycontrol": ("https://www.moneycontrol.com/rss/latestnews.xml", "India"),   # better than old one
-    "Business Standard": ("https://www.business-standard.com/rss/markets-106.rss", "India"),  # keep or try this if needed
-    "Financial Express": ("https://www.financialexpress.com/market/feed/", "India"),  # keep
-
+    "Forbes": ("https://www.forbes.com/markets/feed/", "Global"),
+    "Barchart": ("https://www.barchart.com/rss/news", "Global"),
+    "Wall Street Journal": ("https://feeds.content.dowjones.com/rss/WSJcomUSBusiness.xml", "Global"),
+    "TV BRICS": ("https://tvbrics.com/en/rss/", "Global"),
     # India
     "Economic Times": ("https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms", "India"),
-    "Moneycontrol": ("https://www.moneycontrol.com/rss/marketreports.xml", "India"),
+    "Moneycontrol": ("https://www.moneycontrol.com/rss/latestnews.xml", "India"),
     "Mint": ("https://www.livemint.com/rss/markets", "India"),
     "Business Standard": ("https://www.business-standard.com/rss/markets-106.rss", "India"),
     "Hindu BusinessLine": ("https://www.thehindubusinessline.com/markets/?service=rss", "India"),
