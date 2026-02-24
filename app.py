@@ -11,29 +11,22 @@ app = Flask(__name__)
     # ---------------- SOURCES ---------------- #
 RSS_FEEDS = {
     # Global
-    "Reuters": ("https://feeds.reuters.com/reuters/businessNews", "Global"),
     "Bloomberg": ("https://feeds.bloomberg.com/markets/news.rss", "Global"),
     "CNBC": ("https://www.cnbc.com/id/100003114/device/rss/rss.html", "Global"),
     "MarketWatch": ("https://feeds.marketwatch.com/marketwatch/topstories/", "Global"),
     "Kitco": ("https://www.kitco.com/news/category/mining/rss", "Global"),
-    "Forbes": ("https://www.forbes.com/markets/feed/", "Global"),
-    "Barchart": ("https://www.barchart.com/rss/news", "Global"),
     "Wall Street Journal": ("https://feeds.content.dowjones.com/rss/WSJcomUSBusiness.xml", "Global"),
-    "TV BRICS": ("https://tvbrics.com/en/rss/", "Global"),
-    "Mining.com": ("https://www.mining.com/tag/gold/feed/", "Global"),   # or /tag/silver/feed/
-    "Mining.com": ("https://www.mining.com/tag/silver/feed/", "Global"),
     "Investing.com": ("https://www.investing.com/rss/news_14.rss", "Global"),
-    "VentureBeat AI": ("https://venturebeat.com/category/ai/feed/", "Global"),
     "WIRED AI": ("https://www.wired.com/feed/tag/ai/latest/rss", "Global"),
     "BBC Business": ("https://feeds.bbci.co.uk/news/business/rss.xml", "Global"),
     "Yahoo Finance": ("https://finance.yahoo.com/rss/topstories", "Global"),
+    "Forbes Markets": ("https://www.forbes.com/markets/feed/", "Global"),
+    "GoldBroker": ("https://www.goldbroker.com/en/news.rss", "Global"),
+    
     # India
     "Economic Times": ("https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms", "India"),
-    "Moneycontrol": ("https://www.moneycontrol.com/rss/marketreports.xml", "India"),
     "Mint": ("https://www.livemint.com/rss/markets", "India"),
-    "Business Standard": ("https://www.business-standard.com/rss/markets-106.rss", "India"),
     "Hindu BusinessLine": ("https://www.thehindubusinessline.com/markets/?service=rss", "India"),
-    "Financial Express": ("https://www.financialexpress.com/market/feed/", "India"),
     "Financial Times": ("https://www.ft.com/?format=rss", "Global"),
     "CNBC TV18": ("https://www.cnbctv18.com/commonfeeds/v1/cne/rss/market.xml", "India"),
 }
@@ -42,18 +35,18 @@ RSS_FEEDS = {
 METAL_KEYWORDS = [
     "gold", "silver", "xau", "xag", "gold price", "silver price",
     "mcx gold", "mcx silver", "record high gold", "safe haven", "bullion",
-    "central bank buying", "gold etf", "gold miners","sensex", "nifty","sensex", "nifty", "bse", "nse","COMEX"
+    "central bank buying", "gold etf","Silver etf","gold miners","bse", "nse","COMEX","MCX"
 ]
 
 AI_KEYWORDS = [
     "ai", "artificial intelligence", "nvidia", "openai", "chatgpt",
-    "llm", "machine learning", "generative ai", "ai agent", "gpu"
+    "llm", "machine learning", "generative ai", "ai agent", "gpu","AI","grok","Anthropic","Claude","Agentic"
 ]
 
 CRISIS_KEYWORDS = [
     "recession", "inflation", "war", "conflict", "geopolitical",
     "interest rate", "unemployment", "market crash", "trade war",
-    "rupee depreciation", "fii selling", "rbi rate", "debt crisis", "tariff"
+    "rupee depreciation", "fii selling", "rbi rate", "debt crisis", "tariff","global debt","RBI"
 ]
 news_cache = []
 last_updated_time = None
