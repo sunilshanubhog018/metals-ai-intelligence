@@ -15,6 +15,7 @@ RSS_FEEDS = {
     "CNBC": ("https://www.cnbc.com/id/100003114/device/rss/rss.html", "Global"),
     "MarketWatch": ("https://feeds.marketwatch.com/marketwatch/topstories/", "Global"),
     "Kitco": ("https://www.kitco.com/news/category/mining/rss", "Global"),
+    "Barchart Commodities": ("https://www.barchart.com/news/rss/commodities", "Global"),
     "Wall Street Journal": ("https://feeds.content.dowjones.com/rss/WSJcomUSBusiness.xml", "Global"),
     "Investing.com": ("https://www.investing.com/rss/news_14.rss", "Global"),
     "WIRED AI": ("https://www.wired.com/feed/tag/ai/latest/rss", "Global"),
@@ -35,18 +36,20 @@ RSS_FEEDS = {
 METAL_KEYWORDS = [
     "gold", "silver", "xau", "xag", "gold price", "silver price",
     "mcx gold", "mcx silver", "record high gold", "safe haven", "bullion",
-    "central bank buying", "gold etf","Silver etf","gold miners","bse", "nse","COMEX","MCX"
+    "central bank buying", "gold etf","Silver etf","gold miners","bse", "nse","COMEX","MCX",
+    "precious metals", "gold futures", "silver futures", "spot gold", "spot silver",
+    "lbma", "comex gold", "comex silver", "gold price today", "silver price today",
 ]
 
 AI_KEYWORDS = [
     "ai", "artificial intelligence", "nvidia", "openai", "chatgpt",
-    "llm", "machine learning", "generative ai", "ai agent", "gpu","AI","grok","Anthropic","Claude","Agentic"
+    "llm", "machine learning", "generative ai", "ai agent", "gpu","AI","grok","Anthropic","Claude","Agentic",
 ]
 
 CRISIS_KEYWORDS = [
     "recession", "inflation", "war", "conflict", "geopolitical",
     "interest rate", "unemployment", "market crash", "trade war",
-    "rupee depreciation", "fii selling", "rbi rate", "debt crisis", "tariff","global debt","RBI"
+    "rupee depreciation", "fii selling", "rbi rate", "debt crisis", "tariff","global debt","RBI",
 ]
 news_cache = []
 last_updated_time = None
