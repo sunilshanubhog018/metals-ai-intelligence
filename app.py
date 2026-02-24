@@ -34,7 +34,7 @@ RSS_FEEDS = {
 METAL_KEYWORDS = [
     "gold", "silver", "xau", "xag", "gold price", "silver price",
     "mcx gold", "mcx silver", "record high gold", "safe haven", "bullion",
-    "central bank buying", "gold etf","Silver etf","gold miners","bse", "nse","COMEX","MCX",
+    "central bank buying", "gold etf","Silver etf","gold miners","COMEX","MCX",
     "precious metals", "gold futures", "silver futures", "spot gold", "spot silver",
     "lbma", "comex gold", "comex silver", "gold price today", "silver price today",
 ]
