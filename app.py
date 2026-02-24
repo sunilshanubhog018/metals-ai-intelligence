@@ -14,14 +14,12 @@ RSS_FEEDS = {
     "Bloomberg": ("https://feeds.bloomberg.com/markets/news.rss", "Global"),
     "CNBC": ("https://www.cnbc.com/id/100003114/device/rss/rss.html", "Global"),
     "MarketWatch": ("https://feeds.marketwatch.com/marketwatch/topstories/", "Global"),
-    "Kitco": ("https://www.kitco.com/news/category/mining/rss", "Global"),
     "Barchart Commodities": ("https://www.barchart.com/news/rss/commodities", "Global"),
     "Wall Street Journal": ("https://feeds.content.dowjones.com/rss/WSJcomUSBusiness.xml", "Global"),
     "Investing.com": ("https://www.investing.com/rss/news_14.rss", "Global"),
     "WIRED AI": ("https://www.wired.com/feed/tag/ai/latest/rss", "Global"),
     "BBC Business": ("https://feeds.bbci.co.uk/news/business/rss.xml", "Global"),
     "Yahoo Finance": ("https://finance.yahoo.com/rss/topstories", "Global"),
-    "Forbes Markets": ("https://www.forbes.com/markets/feed/", "Global"),
     "GoldBroker": ("https://www.goldbroker.com/en/news.rss", "Global"),
     
     # India
